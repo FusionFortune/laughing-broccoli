@@ -8,7 +8,7 @@ import os
 # Gemini configuration
 # ------------------
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-model = genai.GenerativeModel("gemini-flash-2.5")
+model = genai.GenerativeModel("gemini-2.5-flash")
 # ------------------
 # FastAPI app
 # ------------------
