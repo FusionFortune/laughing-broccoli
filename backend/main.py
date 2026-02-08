@@ -1,30 +1,42 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from typing import Optional
 import google.generativeai as genai
 import os
 
-# --- Gemini config ---
+# ------------------
+# Gemini configuration
+# ------------------
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 model = genai.GenerativeModel("gemini-1.5-flash")
 
+# ------------------
+# FastAPI app
+# ------------------
 app = FastAPI()
 
-# --- Request schema ---
+# ------------------
+# Request schema
+# ------------------
 class AnalyzeRequest(BaseModel):
     vision: str
     requirements: str
     student_work: str
     peer_feedback_1: str
-    peer_feedback_2: str | None = None
+    peer_feedback_2: Optional[str] = None
 
 
-# --- Health check (keep this) ---
+# ------------------
+# Health check
+# ------------------
 @app.get("/")
 def root():
     return {"status": "ok"}
 
 
-# --- Core analyze endpoint ---
+# ------------------
+# Core analysis endpoint
+# ------------------
 @app.post("/analyze")
 def analyze(data: AnalyzeRequest):
 
@@ -58,7 +70,7 @@ Tasks:
 5. Rewrite the peer feedback to be vision-aware and constructive.
 6. Provide coaching tips.
 7. Perform sentiment, inclusivity, and ethical checks.
-8. If two feedbacks are present, synthesize them.
+8. If multiple feedbacks exist, synthesize them.
 
 Respond ONLY in valid JSON with this structure:
 {{
